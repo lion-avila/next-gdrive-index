@@ -97,6 +97,10 @@ export async function GET(
       headers.set("Content-Disposition", `inline; filename="${file.data.name}"`);
     }
 
+    if (file.data.fileExtension === "mkv" || file.data.mimeType === "video/x-matroska") {
+      headers.set("Content-Type", "video/mp4");
+    }
+
     return new NextResponse(content.data as unknown as BodyInit, {
       status: isFullyLoaded ? 200 : content.status,
       headers: headers,

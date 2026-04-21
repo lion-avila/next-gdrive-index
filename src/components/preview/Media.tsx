@@ -65,7 +65,7 @@ export default function PreviewMedia({ file, type, playlist }: Props) {
           key={file.encryptedId}
           src={{
             src: `/api/preview/${file.encryptedId}`,
-            type: file.mimeType as AudioMimeType | VideoMimeType,
+            type: (file.mimeType === "video/x-matroska" || file.fileExtension === "mkv" ? "video/mp4" : file.mimeType) as AudioMimeType | VideoMimeType,
           }}
           loop={isLoop}
           playsInline
