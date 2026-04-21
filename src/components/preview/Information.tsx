@@ -114,6 +114,10 @@ export default function PreviewInformation({ file, token }: Props) {
     return rawUrl.toString();
   }, [pathname]);
 
+  const previewUrl = useMemo<string>(() => {
+    return new URL(`/api/preview/${file.encryptedId}`, config.basePath).toString();
+  }, [file.encryptedId]);
+
   const onCopyEmbed = useCallback(async () => {
     toast.loading("Copying embed code...", {
       id: `embed-${file.encryptedId}`,
@@ -303,19 +307,19 @@ export default function PreviewInformation({ file, token }: Props) {
                 >
                   <ResponsiveDropdownMenuItem
                     closeOnSelect
-                    onSelect={() => { window.location.href = `vlc://${rawUrl}`; }}
+                    onSelect={() => { window.location.href = `vlc://${previewUrl}`; }}
                   >
                     VLC
                   </ResponsiveDropdownMenuItem>
                   <ResponsiveDropdownMenuItem
                     closeOnSelect
-                    onSelect={() => { window.location.href = `potplayer://${rawUrl}`; }}
+                    onSelect={() => { window.location.href = `potplayer://${previewUrl}`; }}
                   >
                     PotPlayer
                   </ResponsiveDropdownMenuItem>
                   <ResponsiveDropdownMenuItem
                     closeOnSelect
-                    onSelect={() => { window.location.href = `iina://weblink?url=${rawUrl}`; }}
+                    onSelect={() => { window.location.href = `iina://weblink?url=${previewUrl}`; }}
                   >
                     IINA
                   </ResponsiveDropdownMenuItem>
