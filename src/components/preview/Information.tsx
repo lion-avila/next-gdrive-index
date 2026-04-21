@@ -307,19 +307,19 @@ export default function PreviewInformation({ file, token }: Props) {
                 >
                   <ResponsiveDropdownMenuItem
                     closeOnSelect
-                    onSelect={() => { window.location.href = `vlc://${new URL(`/api/playlist/${file.encryptedId}`, config.basePath).toString()}`; }}
+                    onSelect={() => { window.location.href = `vlc://${new URL(`/api/external-stream/${file.encryptedId}`, config.basePath).toString()}`; }}
                   >
                     VLC
                   </ResponsiveDropdownMenuItem>
                   <ResponsiveDropdownMenuItem
                     closeOnSelect
-                    onSelect={() => { window.location.href = `potplayer://${new URL(`/api/playlist/${file.encryptedId}`, config.basePath).toString()}`; }}
+                    onSelect={() => { window.location.href = `potplayer://${new URL(`/api/external-stream/${file.encryptedId}`, config.basePath).toString()}`; }}
                   >
                     PotPlayer
                   </ResponsiveDropdownMenuItem>
                   <ResponsiveDropdownMenuItem
                     closeOnSelect
-                    onSelect={() => { window.location.href = `iina://weblink?url=${new URL(`/api/playlist/${file.encryptedId}`, config.basePath).toString()}`; }}
+                    onSelect={() => { window.location.href = `iina://weblink?url=${new URL(`/api/external-stream/${file.encryptedId}`, config.basePath).toString()}`; }}
                   >
                     IINA
                   </ResponsiveDropdownMenuItem>

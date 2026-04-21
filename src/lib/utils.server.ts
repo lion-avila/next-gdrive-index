@@ -80,7 +80,7 @@ export const base64Decode = <T = unknown>(encoded: string, type: B64Type = "url"
 };
 
 class GoogleDriveService {
-  private auth: GoogleAuth<JSONClient>;
+  public auth: GoogleAuth<JSONClient>;
   public gdrive: drive_v3.Drive;
   public gdriveNoCache: drive_v3.Drive;
 
@@ -98,7 +98,7 @@ class GoogleDriveService {
         client_id: parsedAuth.data.client_id,
       },
       projectId: parsedAuth.data.project_id,
-      scopes: ["https://www.googleapis.com/auth/drive"],
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
     });
     if (!this.auth) throw new Error("Failed to initialize Google Auth");
     this.gdrive = google.drive({
@@ -117,5 +117,5 @@ class GoogleDriveService {
   }
 }
 
-export const { gdrive, gdriveNoCache } = new GoogleDriveService();
+export const { gdrive, gdriveNoCache, auth } = new GoogleDriveService();
 export const encryptionService = new EncryptionService();
