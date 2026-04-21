@@ -109,6 +109,11 @@ export default function PreviewInformation({ file, token }: Props) {
 
   const [isRawExplanationOpen, setIsRawExplanationOpen] = useState<boolean>(false);
 
+  const rawUrl = useMemo<string>(() => {
+    const rawUrl = new URL(`/api/raw/${pathname}`.replace(/\/+/g, "/"), config.basePath);
+    return rawUrl.toString();
+  }, [pathname]);
+
   const onCopyEmbed = useCallback(async () => {
     toast.loading("Copying embed code...", {
       id: `embed-${file.encryptedId}`,
@@ -137,9 +142,7 @@ export default function PreviewInformation({ file, token }: Props) {
       id: `raw-${file.encryptedId}`,
     });
     try {
-      const rawUrl = new URL(`/api/raw/${pathname}`.replace(/\/+/g, "/"), config.basePath);
-      // if (!config.apiConfig.allowDownloadProtectedFile) rawUrl.searchParams.append("token", token);
-      await navigator.clipboard.writeText(rawUrl.toString());
+      await navigator.clipboard.writeText(rawUrl);
       toast.success("Raw link copied!", {
         id: `raw-${file.encryptedId}`,
       });
@@ -281,6 +284,44 @@ export default function PreviewInformation({ file, token }: Props) {
                 {/* </ResponsiveDialogTrigger> */}
               </ResponsiveDropdownMenuContent>
             </ResponsiveDropdownMenu>
+
+            {fileType === "video" && (
+              <ResponsiveDropdownMenu modal={isDesktop ? false : true}>
+                <ResponsiveDropdownMenuTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className='w-full tablet:w-fit'
+                  >
+                    <Icon name='Play' />
+                    External Player
+                  </Button>
+                </ResponsiveDropdownMenuTrigger>
+                <ResponsiveDropdownMenuContent
+                  header={{
+                    title: "Open in External Player",
+                  }}
+                >
+                  <ResponsiveDropdownMenuItem
+                    closeOnSelect
+                    onSelect={() => { window.location.href = `vlc://${rawUrl}`; }}
+                  >
+                    VLC
+                  </ResponsiveDropdownMenuItem>
+                  <ResponsiveDropdownMenuItem
+                    closeOnSelect
+                    onSelect={() => { window.location.href = `potplayer://${rawUrl}`; }}
+                  >
+                    PotPlayer
+                  </ResponsiveDropdownMenuItem>
+                  <ResponsiveDropdownMenuItem
+                    closeOnSelect
+                    onSelect={() => { window.location.href = `iina://weblink?url=${rawUrl}`; }}
+                  >
+                    IINA
+                  </ResponsiveDropdownMenuItem>
+                </ResponsiveDropdownMenuContent>
+              </ResponsiveDropdownMenu>
+            )}
 
             {showViewDoc && (
               <Button
