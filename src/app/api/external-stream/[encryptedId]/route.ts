@@ -34,10 +34,13 @@ export async function GET(
     // This allows VLC to bypass Vercel entirely and stream directly from Google's servers
     const directStreamUrl = `https://www.googleapis.com/drive/v3/files/${decryptedId}?alt=media&access_token=${token}`;
 
-    return new NextResponse(null, {
-      status: 302,
+    const m3uContent = `#EXTM3U\n#EXTINF:-1,${file.data.name}\n${directStreamUrl}`;
+
+    return new NextResponse(m3uContent, {
+      status: 200,
       headers: {
-        Location: directStreamUrl,
+        "Content-Type": "application/vnd.apple.mpegurl",
+        "Content-Disposition": `attachment; filename="${file.data.name}.m3u"`,
       },
     });
   } catch (error) {
