@@ -32,8 +32,9 @@ export async function GET(
       });
     }
 
-    // // Only allow if the request is from the same domain or the referer is the same domain
-    if (!IS_DEV && !origin?.toLowerCase().includes(config.basePath.toLowerCase())) {
+    // Only allow if the request is from the same domain or the referer is the same domain
+    const bareBasePath = config.basePath.replace(/^https?:\/\//, "");
+    if (!IS_DEV && !origin?.toLowerCase().includes(bareBasePath.toLowerCase())) {
       throw new Error("[403] Unauthorized", {
         cause: "Request is not allowed",
       });
